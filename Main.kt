@@ -14,6 +14,8 @@ fun main() {
             input.contains("leave") -> leave(spot, input)
             input.contains("status") -> status(spot)
             input.contains("create") -> spot = crate(input)
+            input.contains("reg_by_color") || input.contains("spot_by_color") -> byColor(spot, input)
+            input.contains("spot_by_reg") || input.contains("color_by_reg")  -> byReg(spot, input)
             input.contains("exit") -> break
             else -> println("Wrong input")
         }
@@ -91,3 +93,61 @@ fun status(spot: MutableList<Car>) {
         }
     } else println("Parking lot is empty.")
 } //shows parked cars with spot number
+
+fun byColor(spot: MutableList<Car>, input: CharSequence) {
+    val spotSpilt = input.split(" ")
+    val spotColor: MutableList<Car> = mutableListOf()
+    if (spotSpilt.size == 2) {
+        for (i in spot) {
+            if (i.color.uppercase() == spotSpilt[1].uppercase()) {
+                spotColor.add(spot[i.seatNum.toInt() - 1])
+            }
+        }
+        if (spotColor.isNotEmpty()) {
+            when (spotSpilt[0]) {
+                "spot_by_color" -> {
+                    for (i in spotColor) {
+                        if (i != spotColor.last()) print("${i.seatNum}, ") else print(i.seatNum)
+                    }
+                    println()
+                }
+
+                "reg_by_color" -> {
+                    for (i in spotColor) {
+                        if (i != spotColor.last()) print("${i.id}, ") else print(i.id)
+                    }
+                    println()
+                }
+            }
+        } else println("No cars with color ${spotSpilt[1]} were found.")
+    } else println("Wrong Input!")
+}
+
+fun byReg(spot: MutableList<Car>, input: CharSequence) {
+    val spotSpilt = input.split(" ")
+    val spotReg: MutableList<Car> = mutableListOf()
+    if (spotSpilt.size == 2) {
+        for (i in spot) {
+            if (i.id.uppercase() == spotSpilt[1].uppercase()) {
+                spotReg.add(spot[i.seatNum.toInt() - 1])
+            }
+        }
+        if (spotReg.isNotEmpty()) {
+            when (spotSpilt[0]) {
+                "spot_by_reg" -> {
+                    for (i in spotReg) {
+                        if (i != spotReg.last()) print("${i.seatNum}, ") else print(i.seatNum)
+                    }
+                    println()
+                }
+
+                "color_by_reg" -> {
+                    for (i in spotReg) {
+                        if (i != spotReg.last()) print("${i.color}, ") else print(i.color)
+                    }
+                    println()
+                }
+            }
+        } else println("No cars with registration number ${spotSpilt[1]} were found.")
+    } else println("Wrong Input!")
+}
